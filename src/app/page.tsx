@@ -1,103 +1,656 @@
-import Image from "next/image";
+"use client"; // This directive marks the component as a Client Component
 
-export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+// This code is designed to be placed in a `page.tsx` file within a Next.js App Router project.
+// Ensure you have installed React and Tailwind CSS.
+// For ShadCN UI, you would normally import components from your configured path (e.g., "@/components/ui/button").
+// The mock components included here are for demonstration purposes in this environment.
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+import React, { useState, useEffect, ChangeEvent, MouseEvent } from 'react';
+
+// Define Prop Types for Mock ShadCN components
+interface InputProps {
+    id?: string;
+    placeholder?: string;
+    value: string;
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    className?: string;
 }
+
+interface ButtonProps {
+    children: React.ReactNode;
+    onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
+    disabled?: boolean;
+    className?: string;
+}
+
+interface CardProps {
+    children: React.ReactNode;
+    className?: string;
+    style?: React.CSSProperties; // Added style property to CardProps
+}
+
+interface CardHeaderProps {
+    children: React.ReactNode;
+    className?: string;
+}
+
+interface CardTitleProps {
+    children: React.ReactNode;
+    className?: string;
+}
+
+interface CardContentProps {
+    children: React.ReactNode;
+    className?: string;
+}
+
+interface TextareaProps {
+    placeholder?: string;
+    value: string;
+    onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+    className?: string;
+    readOnly?: boolean;
+    style?: React.CSSProperties;
+}
+
+interface LabelProps {
+    children: React.ReactNode;
+    htmlFor?: string;
+    className?: string;
+}
+
+interface CopyButtonProps {
+    textToCopy: string;
+}
+
+const Input = ({ id, placeholder, value, onChange, className }: InputProps) => (
+    <input
+        id={id}
+        type="text"
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        className={`flex h-10 w-full rounded-md border text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50
+            border-gray-300 bg-white text-gray-900 placeholder:text-gray-500 focus-visible:ring-blue-500
+            dark:border-sky-700 dark:bg-sky-900 dark:text-sky-100 dark:placeholder:text-sky-400 dark:focus-visible:ring-cyan-400
+            transition-all duration-300 ease-in-out ${className}`}
+    />
+);
+
+const Button = ({ children, onClick, disabled, className }: ButtonProps) => {
+    const [ripple, setRipple] = useState<{ key: number; style: React.CSSProperties }[]>([]);
+
+    const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+        const button = event.currentTarget;
+        const size = Math.max(button.offsetWidth, button.offsetHeight);
+        const rect = button.getBoundingClientRect();
+        const x = event.clientX - rect.left - size / 2;
+        const y = event.clientY - rect.top - size / 2;
+
+        const newRipple = {
+            key: Date.now(),
+            style: {
+                width: size,
+                height: size,
+                left: x,
+                top: y,
+            },
+        };
+        setRipple((prev) => [...prev, newRipple]);
+        setTimeout(() => {
+            setRipple((prev) => prev.filter((r) => r.key !== newRipple.key));
+        }, 600); // Ripple duration
+
+        if (onClick) onClick(event);
+    };
+
+    return (
+        <button
+            onClick={handleClick}
+            disabled={disabled}
+            className={`relative inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-0.5 overflow-hidden
+                bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-500
+                dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus-visible:ring-cyan-500
+                h-10 px-4 py-2 ${className}`}
+        >
+            {children}
+            {ripple.map((r) => (
+                <span
+                    key={r.key}
+                    className="absolute rounded-full bg-white opacity-40 animate-ripple"
+                    style={{
+                        ...r.style,
+                        transform: 'scale(0)',
+                        animation: 'ripple 0.6s linear forwards',
+                    }}
+                ></span>
+            ))}
+            <style jsx>{`
+                @keyframes ripple {
+                    to {
+                        transform: scale(4);
+                        opacity: 0;
+                    }
+                }
+            `}</style>
+        </button>
+    );
+};
+
+const Card = ({ children, className, style }: CardProps) => (
+    <div className={`rounded-xl border shadow-2xl transition-all duration-500 ease-in-out hover:shadow-sky-500/30
+        border-gray-200 bg-white text-gray-900
+        dark:border-sky-800 dark:bg-sky-950 dark:text-sky-100
+        ${className}`}
+        style={style} // Pass style prop to the div
+    >
+        {children}
+    </div>
+);
+
+const CardHeader = ({ children, className }: CardHeaderProps) => (
+    <div className={`flex flex-col space-y-1.5 p-6 ${className}`}>
+        {children}
+    </div>
+);
+
+const CardTitle = ({ children, className }: CardTitleProps) => (
+    <h3 className={`text-2xl font-semibold leading-none tracking-tight ${className}`}>
+        {children}
+    </h3>
+);
+
+const CardContent = ({ children, className }: CardContentProps) => (
+    <div className={`p-6 pt-0 ${className}`}>
+        {children}
+    </div>
+);
+
+const Textarea = ({ placeholder, value, onChange, className, readOnly, style }: TextareaProps) => (
+    <textarea
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        readOnly={readOnly}
+        className={`flex min-h-[80px] w-full rounded-md border text-sm resize-y focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50
+            border-gray-300 bg-gray-50 text-gray-900 placeholder:text-gray-500 focus-visible:ring-blue-500
+            dark:border-sky-700 dark:bg-sky-800 dark:text-sky-100 dark:placeholder:text-sky-400 dark:focus-visible:ring-cyan-400
+            transition-all duration-300 ease-in-out ${className}`}
+        style={style}
+    />
+);
+
+const Label = ({ children, htmlFor, className }: LabelProps) => (
+    <label
+        htmlFor={htmlFor}
+        className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${className}`}
+    >
+        {children}
+    </label>
+);
+
+// Custom Copy Button Component
+const CopyButton = ({ textToCopy }: CopyButtonProps) => {
+    const [copied, setCopied] = useState(false);
+
+    const handleCopy = () => {
+        try {
+            const textarea = document.createElement('textarea');
+            textarea.value = textToCopy;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy'); // Deprecated but widely supported in iframes
+            document.body.removeChild(textarea);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000); // Reset "Copied!" message after 2 seconds
+        } catch (err) {
+            console.error('Failed to copy text:', err);
+        }
+    };
+
+    return (
+        <button
+            onClick={handleCopy}
+            className={`absolute top-2 right-2 p-1 rounded-md text-xs transition-all duration-300
+                ${copied ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}
+                dark:${copied ? 'bg-emerald-600 text-white' : 'bg-sky-700 text-sky-300 hover:bg-sky-600'}`}
+        >
+            {copied ? 'Copied!' : 'Copy'}
+        </button>
+    );
+};
+
+function BlogSummarizerPage() {
+    const [url, setUrl] = useState<string>('');
+    const [originalText, setOriginalText] = useState<string>('');
+    const [summary, setSummary] = useState<string>('');
+    const [urduSummary, setUrduSummary] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
+    const [showResults, setShowResults] = useState<boolean>(false);
+    const [theme, setTheme] = useState<string>('dark'); // Default to dark theme
+
+    // Apply theme class to HTML element
+    useEffect(() => {
+        if (typeof window !== 'undefined') { // Ensure this runs only in the browser
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+    }, [theme]);
+
+    const toggleTheme = () => {
+        setTheme(prevTheme => (prevTheme === 'dark' ? 'light' : 'dark'));
+    };
+
+    // Simulated Urdu Dictionary (used for frontend translation if no API is called)
+    const urduDictionary: { [key: string]: string } = {
+        "This is a simulated blog content.": "یہ ایک فرضی بلاگ کا مواد ہے۔",
+        "It covers various topics including technology, science, and daily life.": "اس میں ٹیکنالوجی، سائنس، اور روزمرہ کی زندگی سمیت مختلف موضوعات شامل ہیں۔",
+        "For a real application, you would implement actual web scraping and AI summarization.": "ایک حقیقی ایپلیکیشن کے لیے، آپ اصل ویب سکریپنگ اور AI خلاصہ سازی کا نفاذ کریں گے۔",
+        "This content is designed to be long enough for a summary.": "یہ مواد خلاصہ کے لیے کافی لمبا ہے۔",
+        "It might discuss the latest advancements in AI, the impact of climate change, or perhaps a personal reflection on productivity tips.": "اس میں AI میں تازہ ترین پیشرفت، موسمیاتی تبدیلی کے اثرات، یا پیداواری تجاویز پر ذاتی عکاسی شامل ہو سکتی ہے۔",
+        "The goal is to provide a comprehensive overview without being too verbose.": "مقصد بہت زیادہ الفاظ استعمال کیے بغیر ایک جامع جائزہ فراہم کرنا ہے۔",
+        "Thank you for using the Blog Summarizer!": "بلاگ سمرائزر استعمال کرنے کا شکریہ!",
+        "This is a simulated summary of the blog content.": "یہ بلاگ کے مواد کا ایک فرضی خلاصہ ہے۔",
+        "It highlights the main points and gives a brief overview.": "یہ اہم نکات کو اجاگر کرتا ہے اور ایک مختصر جائزہ پیش کرتا ہے۔",
+        "The full text would be stored in MongoDB and the summary in Supabase.": "مکمل متن MongoDB میں اور خلاصہ Supabase میں محفوظ کیا جائے گا۔",
+        "Please enter a valid URL.": "براہ کرم ایک درست URL درج کریں۔",
+        "Failed to summarize the blog.": "بلاگ کا خلاصہ کرنے میں ناکامی۔",
+        "Failed to save summary to Supabase.": "خلاصہ Supabase میں محفوظ کرنے میں ناکامی۔",
+        "Failed to save full text to MongoDB.": "مکمل متن MongoDB میں محفوظ کرنے میں ناکامی۔",
+        "Failed to scrape blog content.": "بلاگ کا مواد سکریپ کرنے میں ناکامی۔",
+        "Failed to generate AI summary.": "AI خلاصہ بنانے میں ناکامی۔",
+        "Failed to translate text.": "متن کا ترجمہ کرنے میں ناکامی۔"
+    };
+
+    // Function to translate to Urdu (now primarily used for error messages, as main translation is via API)
+    const translateToUrdu = (text: string): string => {
+        let translatedText: string = text;
+        for (const [english, urdu] of Object.entries(urduDictionary)) {
+            translatedText = translatedText.replace(new RegExp(english, 'g'), urdu);
+        }
+        return translatedText;
+    };
+
+    const handleSummarize = async () => {
+        setError('');
+        setOriginalText('');
+        setSummary('');
+        setUrduSummary('');
+        setShowResults(false); // Hide results before new summary
+
+        if (!url) {
+            setError(translateToUrdu('Please enter a valid URL.'));
+            return;
+        }
+
+        setLoading(true);
+
+        // Get the base URL dynamically
+        const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+        console.log("Base URL for API calls:", baseUrl); // Log the base URL
+
+        try {
+            // Step 1: Call your scraping API route
+            console.log("Calling /api/scrape...");
+            const scrapeResponse = await fetch(`${baseUrl}/api/scrape`, { // Changed to absolute URL
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url }),
+            });
+
+            if (!scrapeResponse.ok) {
+                const errorText = await scrapeResponse.text(); // Get raw text to debug HTML response
+                console.error("Scrape API response not OK:", scrapeResponse.status, errorText);
+                try {
+                    const errorData = JSON.parse(errorText); // Try parsing as JSON
+                    throw new Error(errorData.message || 'Failed to scrape blog content.');
+                } catch (jsonError) {
+                    // If it's not valid JSON, it's likely HTML, so throw a more specific error
+                    throw new Error(`Failed to scrape blog content: Received unexpected response (likely HTML). Status: ${scrapeResponse.status}. Raw response: ${errorText.substring(0, 200)}...`);
+                }
+            }
+            const { originalContent } = await scrapeResponse.json();
+            setOriginalText(originalContent);
+            console.log("Scrape successful.");
+
+            // Step 2: Call your AI summarization API route
+            console.log("Calling /api/summarize-ai...");
+            const summarizeResponse = await fetch(`${baseUrl}/api/summarize-ai`, { // Changed to absolute URL
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ textToSummarize: originalContent }),
+            });
+
+            if (!summarizeResponse.ok) {
+                const errorText = await summarizeResponse.text();
+                console.error("Summarize API response not OK:", summarizeResponse.status, errorText);
+                try {
+                    const errorData = JSON.parse(errorText);
+                    throw new Error(errorData.message || 'Failed to generate AI summary.');
+                } catch (jsonError) {
+                    throw new Error(`Failed to generate AI summary: Received unexpected response (likely HTML). Status: ${summarizeResponse.status}. Raw response: ${errorText.substring(0, 200)}...`);
+                }
+            }
+            const { summary: aiSummary } = await summarizeResponse.json();
+            setSummary(aiSummary);
+            console.log("Summarize successful.");
+
+            // Step 3: Call your Urdu translation API route
+            console.log("Calling /api/translate-urdu...");
+            const translateResponse = await fetch(`${baseUrl}/api/translate-urdu`, { // Changed to absolute URL
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ textToTranslate: aiSummary }),
+            });
+
+            if (!translateResponse.ok) {
+                const errorText = await translateResponse.text();
+                console.error("Translate API response not OK:", translateResponse.status, errorText);
+                try {
+                    const errorData = JSON.parse(errorText);
+                    throw new Error(errorData.message || 'Failed to translate text.');
+                } catch (jsonError) {
+                    throw new Error(`Failed to translate text: Received unexpected response (likely HTML). Status: ${translateResponse.status}. Raw response: ${errorText.substring(0, 200)}...`);
+                }
+            }
+            const { translatedText: urduTranslatedSummary } = await translateResponse.json();
+            setUrduSummary(urduTranslatedSummary);
+            console.log("Translation successful.");
+
+            // Step 4: Save full text to MongoDB via API route
+            console.log("Calling /api/save-full-text...");
+            const saveFullTextResponse = await fetch(`${baseUrl}/api/save-full-text`, { // Changed to absolute URL
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url, content: originalContent }),
+            });
+            if (!saveFullTextResponse.ok) {
+                const errorText = await saveFullTextResponse.text();
+                console.error("Save Full Text API response not OK:", saveFullTextResponse.status, errorText);
+                try {
+                    const errorData = JSON.parse(errorText);
+                    throw new Error(errorData.message || 'Failed to save full text to MongoDB.');
+                } catch (jsonError) {
+                    throw new Error(`Failed to save full text to MongoDB: Received unexpected response (likely HTML). Status: ${saveFullTextResponse.status}. Raw response: ${errorText.substring(0, 200)}...`);
+                }
+            }
+            console.log("Full text saved successful.");
+
+            // Step 5: Save summary to Supabase via API route
+            console.log("Calling /api/save-summary...");
+            const saveSummaryResponse = await fetch(`${baseUrl}/api/save-summary`, { // Changed to absolute URL
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url, summary: aiSummary, urduSummary: urduTranslatedSummary }),
+            });
+            if (!saveSummaryResponse.ok) {
+                const errorText = await saveSummaryResponse.text();
+                console.error("Save Summary API response not OK:", saveSummaryResponse.status, errorText);
+                try {
+                    const errorData = JSON.parse(errorText);
+                    throw new Error(errorData.message || 'Failed to save summary to Supabase.');
+                } catch (jsonError) {
+                    throw new Error(`Failed to save summary to Supabase: Received unexpected response (likely HTML). Status: ${saveSummaryResponse.status}. Raw response: ${errorText.substring(0, 200)}...`);
+                }
+            }
+            console.log("Summary saved successful.");
+
+            // Small delay before showing results for smoother animation
+            await new Promise(resolve => setTimeout(resolve, 500));
+            setShowResults(true);
+
+        } catch (err: any) {
+            console.error("Summarization process failed:", err);
+            // Translate the error message for the user
+            setError(translateToUrdu(err.message || 'Failed to summarize the blog.'));
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleClearAll = () => {
+        setUrl('');
+        setOriginalText('');
+        setSummary('');
+        setUrduSummary('');
+        setError('');
+        setShowResults(false);
+        setLoading(false);
+    };
+
+    return (
+        // Main container with dark blue background and subtle radial gradient
+        <div className={`min-h-screen flex items-center justify-center p-4 font-inter transition-colors duration-500
+            bg-white text-gray-900
+            dark:bg-slate-950 dark:text-slate-100 relative overflow-hidden`}
+            style={{
+                background: theme === 'dark'
+                    ? 'radial-gradient(circle at center, rgba(30,58,138,0.2) 0%, rgba(15,23,42,1) 70%), linear-gradient(to bottom right, #0F172A, #1E293B)'
+                    : 'radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(243,244,246,1) 70%)'
+            }}
+        >
+            {/* Animated background circles */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+                <div className="absolute w-64 h-64 bg-cyan-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob top-0 left-0"></div>
+                <div className="absolute w-64 h-64 bg-indigo-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000 bottom-0 right-0"></div>
+                <div className="absolute w-64 h-64 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+            </div>
+
+            <div className="w-full max-w-4xl z-10 relative"> {/* Ensure content is above background */}
+                <Card className="shadow-lg rounded-xl">
+                    <CardHeader className="relative">
+                        <CardTitle className="text-center text-4xl font-extrabold bg-clip-text text-transparent pb-2
+                            bg-gradient-to-r from-blue-600 to-purple-600
+                            dark:bg-gradient-to-r dark:from-indigo-400 dark:to-cyan-400
+                            drop-shadow-lg animate-text-glow"> {/* Added animate-text-glow */}
+                            AI Blog Summarizer
+                        </CardTitle>
+                        <p className={`text-center text-md
+                            text-gray-600
+                            dark:text-slate-400`}>
+                            Summarize and translate blog content with a touch of AI magic.
+                        </p>
+
+                        {/* Theme Toggle Button */}
+                        <button
+                            onClick={toggleTheme}
+                            className={`absolute top-4 right-4 p-2 rounded-full transition-colors duration-300
+                                bg-gray-100 hover:bg-gray-200 text-gray-700
+                                dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-300`}
+                            aria-label="Toggle theme"
+                        >
+                            {theme === 'dark' ? (
+                                // Sun icon
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h1M3 12h1m15.325-4.275l-.707-.707M4.372 19.372l-.707-.707M18.921 18.921l-.707-.707M5.071 5.071l-.707-.707M12 18a6 6 0 100-12 6 6 0 000 12z" />
+                                </svg>
+                            ) : (
+                                // Moon icon
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9 9 0 008.354-5.646z" />
+                                </svg>
+                            )}
+                        </button>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                        <div className={`flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4 group relative rounded-lg p-1 transition-all duration-300
+                                        focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2
+                                        dark:focus-within:ring-cyan-400 dark:focus-within:ring-offset-slate-900`}> {/* Input Group Glow */}
+                            <Label htmlFor="blog-url" className="sr-only">Blog URL</Label>
+                            <Input
+                                id="blog-url"
+                                placeholder="Enter blog URL (e.g., https://example.com/blog-post)"
+                                value={url}
+                                onChange={(e) => setUrl(e.target.value)}
+                                className="flex-grow rounded-lg p-3"
+                            />
+                            <Button
+                                onClick={handleSummarize}
+                                disabled={loading}
+                                className="w-full sm:w-auto"
+                            >
+                                {loading ? (
+                                    <div className="flex items-center">
+                                        <svg className="animate-spin h-5 w-5 mr-3 text-white" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        Summarizing...
+                                    </div>
+                                ) : (
+                                    'Summarize Blog'
+                                )}
+                            </Button>
+                        </div>
+
+                        {error && (
+                            <div className="text-red-500 text-center text-sm mt-2 animate-fade-in animate-shake"> {/* Added animate-shake */}
+                                {error}
+                            </div>
+                        )}
+
+                        {showResults && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                                {originalText && (
+                                    <Card className="p-4 rounded-lg shadow-md relative
+                                        bg-white
+                                        dark:bg-sky-800 animate-stagger-fade-in" style={{ animationDelay: '0.1s' }}> {/* Staggered animation */}
+                                        <CardTitle className="text-lg font-semibold mb-2
+                                            text-gray-800
+                                            dark:text-sky-200">Original Blog Content (Simulated)</CardTitle>
+                                        <Textarea
+                                            value={originalText}
+                                            readOnly
+                                            className="w-full h-48 border rounded-md p-3 text-sm resize-y"
+                                        />
+                                        <CopyButton textToCopy={originalText} />
+                                    </Card>
+                                )}
+
+                                {summary && (
+                                    <Card className="p-4 rounded-lg shadow-md relative
+                                        bg-white
+                                        dark:bg-sky-800 animate-stagger-fade-in" style={{ animationDelay: '0.2s' }}> {/* Staggered animation */}
+                                        <CardTitle className="text-lg font-semibold mb-2
+                                            text-gray-800
+                                            dark:text-sky-200">AI Summary (Simulated)</CardTitle>
+                                        <Textarea
+                                            value={summary}
+                                            readOnly
+                                            className="w-full h-48 border rounded-md p-3 text-sm resize-y"
+                                        />
+                                        <CopyButton textToCopy={summary} />
+                                    </Card>
+                                )}
+
+                                {urduSummary && (
+                                    <Card className="p-4 rounded-lg shadow-md col-span-1 md:col-span-2 relative
+                                        bg-white
+                                        dark:bg-sky-800 animate-stagger-fade-in" style={{ animationDelay: '0.3s' }}> {/* Staggered animation */}
+                                        <CardTitle className="text-lg font-semibold mb-2
+                                            text-gray-800
+                                            dark:text-sky-200">اردو خلاصہ (Urdu Summary - Simulated)</CardTitle>
+                                        <Textarea
+                                            value={urduSummary}
+                                            readOnly
+                                            className="w-full h-48 border rounded-md p-3 text-sm text-right font-['Noto_Nastaliq_Urdu'] resize-y"
+                                            style={{ direction: 'rtl' }} // Ensure right-to-left for Urdu
+                                        />
+                                        <CopyButton textToCopy={urduSummary} />
+                                    </Card>
+                                )}
+                            </div>
+                        )}
+                        {(originalText || summary || urduSummary) && (
+                            <div className="flex justify-center mt-6 animate-fade-in">
+                                <Button
+                                    onClick={handleClearAll}
+                                    className="bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800"
+                                >
+                                    Clear All
+                                </Button>
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
+            </div>
+            {/* Tailwind CSS keyframes for animations */}
+            <style jsx>{`
+                @keyframes blob {
+                    0% {
+                        transform: translate(0px, 0px) scale(1);
+                    }
+                    33% {
+                        transform: translate(30px, -50px) scale(1.1);
+                    }
+                    66% {
+                        transform: translate(-20px, 20px) scale(0.9);
+                    }
+                    100% {
+                        transform: translate(0px, 0px) scale(1);
+                    }
+                }
+                .animate-blob {
+                    animation: blob 7s infinite cubic-bezier(0.6, 0.01, 0.3, 0.9);
+                }
+                .animation-delay-2000 {
+                    animation-delay: 2s;
+                }
+                .animation-delay-4000 {
+                    animation-delay: 4s;
+                }
+
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                .animate-fade-in {
+                    animation: fadeIn 0.5s ease-out forwards;
+                }
+
+                @keyframes slideUpFadeIn {
+                    from {
+                        opacity: 0;
+                        transform: translateY(20px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+                .animate-slide-up-fade-in {
+                    animation: slideUpFadeIn 0.6s ease-out forwards;
+                }
+
+                @keyframes textGlow {
+                    0%, 100% {
+                        text-shadow: 0 0 5px rgba(100, 100, 255, 0.5), 0 0 10px rgba(100, 100, 255, 0.3);
+                    }
+                    50% {
+                        text-shadow: 0 0 10px rgba(100, 100, 255, 0.8), 0 0 20px rgba(100, 100, 255, 0.6);
+                    }
+                }
+                .animate-text-glow {
+                    animation: textGlow 3s infinite alternate ease-in-out;
+                }
+
+                @keyframes shake {
+                    0%, 100% { transform: translateX(0); }
+                    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                    20%, 40%, 60%, 80% { transform: translateX(5px); }
+                }
+                .animate-shake {
+                    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+                }
+
+            `}</style>
+        </div>
+    );
+}
+
+export default BlogSummarizerPage;
+
